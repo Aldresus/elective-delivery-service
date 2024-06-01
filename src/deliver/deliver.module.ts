@@ -6,4 +6,4 @@ import { DeliverController } from './deliver.controller';
   controllers: [DeliverController],
   providers: [DeliverService],
 })
-export class DeliverModule { }
+export class DeliverModule {}

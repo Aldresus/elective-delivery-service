@@ -1,34 +1,50 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import type { DeliverService } from './deliver.service';
-import type { CreateDeliverDto } from './dto/create-deliver.dto';
-import type { UpdateDeliverDto } from './dto/update-deliver.dto';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import { DeliverService } from './deliver.service';
+import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { DeliverEntity } from './entities/deliver.entity';
+import { CreateDeliverDto } from './dto/create-deliver.dto';
 
 @Controller('deliver')
+@ApiTags('deliver')
 export class DeliverController {
-  constructor(private readonly deliverService: DeliverService) { }
+  constructor(private readonly deliverService: DeliverService) {}
 
   @Post()
-  create(@Body() createDeliverDto: CreateDeliverDto) {
+  @ApiCreatedResponse({ type: DeliverEntity })
+  @ApiBody({ type: CreateDeliverDto })
+  create(@Body() createDeliverDto) {
     return this.deliverService.create(createDeliverDto);
   }
 
   @Get()
+  @ApiCreatedResponse({ type: DeliverEntity, isArray: true })
   findAll() {
     return this.deliverService.findAll();
   }
 
   @Get(':id')
+  @ApiCreatedResponse({ type: DeliverEntity })
   findOne(@Param('id') id: string) {
-    return this.deliverService.findOne(+id);
+    return this.deliverService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDeliverDto: UpdateDeliverDto) {
-    return this.deliverService.update(+id, updateDeliverDto);
+  @ApiCreatedResponse({ type: DeliverEntity })
+  update(@Param('id') id: string, @Body() updateDeliverDto) {
+    return this.deliverService.update(id, updateDeliverDto);
   }
 
   @Delete(':id')
+  @ApiCreatedResponse({ type: DeliverEntity })
   remove(@Param('id') id: string) {
-    return this.deliverService.remove(+id);
+    return this.deliverService.remove(id);
   }
 }

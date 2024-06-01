@@ -12,15 +12,15 @@ export class DeliverService {
     return `This action returns all deliver`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} deliver`;
   }
 
-  update(id: number, updateDeliverDto: UpdateDeliverDto) {
+  update(id: string, updateDeliverDto: UpdateDeliverDto) {
     return `This action updates a #${id} deliver`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} deliver`;
   }
 }
