@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { DeliverService } from './deliver.service';
-import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiCreatedResponse, ApiTags, ApiQuery } from '@nestjs/swagger';
 import { DeliverEntity } from './entities/deliver.entity';
 import { CreateDeliverDto } from './dto/create-deliver.dto';
 import { UpdateDeliverDto } from './dto/update-deliver.dto';
@@ -28,6 +28,8 @@ export class DeliverController {
 
   @Get()
   @ApiCreatedResponse({ type: DeliverEntity, isArray: true })
+  @ApiQuery({ name: 'id_deliveries', required: false, type: String }) // Marque id_deliveries comme optionnel
+  @ApiQuery({ name: 'id_orders', required: false, type: String })
   findAll(
     @Query('id_deliveries') idDeliveries: string,
     @Query('id_orders') idOrders: string,
@@ -45,7 +47,7 @@ export class DeliverController {
   @Patch(':id')
   @ApiCreatedResponse({ type: DeliverEntity })
   @ApiBody({ type: UpdateDeliverDto })
-  update(@Param('id') id: string, @Body() updateDeliverDto) {
+  update(@Param('id') id: string, @Body() updateDeliverDto: UpdateDeliverDto) {
     return this.deliverService.update(id, updateDeliverDto);
   }
 
