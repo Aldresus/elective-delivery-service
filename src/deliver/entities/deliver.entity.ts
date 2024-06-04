@@ -14,7 +14,10 @@ export class DeliverEntity implements Deliver {
   @ApiProperty()
   rating: number;
 
+  @ApiProperty()
   createdAt: Date;
+  
+  @ApiProperty()
   updatedAt: Date;
 
   constructor(partial: Partial<DeliverEntity>) {
