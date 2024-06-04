@@ -1,0 +1,22 @@
+meta {
+  name: get deliver by id
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:3000/deliver/?id_deliveries&id_orders
+  body: none
+  auth: none
+}
+
+query {
+  id_deliveries: 
+  id_orders: 
+}
+
+docs {
+  if the query params are empty -> return all
+  
+  if one query param is empty -> return occurences where it appears
+}

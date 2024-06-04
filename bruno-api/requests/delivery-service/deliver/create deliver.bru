@@ -1,0 +1,19 @@
+meta {
+  name: create deliver
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/deliver
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id_deliveries": "zy",
+    "id_orders": "zz",
+    "rating": 0
+  }
+}

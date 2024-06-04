@@ -1,0 +1,19 @@
+meta {
+  name: update deliver
+  type: http
+  seq: 4
+}
+
+patch {
+  url: http://localhost:3000/deliver/665b8ec7aa4bee96c95266bb
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id_deliveries": "y edited",
+    "id_orders": "z edited",
+    "rating": 123
+  }
+}
