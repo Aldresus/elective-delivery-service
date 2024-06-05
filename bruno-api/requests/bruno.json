@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "elective",
+  "name": "delivery",
   "type": "collection",
   "ignore": [
     "node_modules",
