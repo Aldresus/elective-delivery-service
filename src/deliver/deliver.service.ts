@@ -15,17 +15,17 @@ export class DeliverService {
     });
   }
 
-  findMany(ids: { id_users: string; id_orders: string }) {
+  findMany(ids: { id_user: string; id_order: string }) {
     console.log(ids);
 
     return this.prisma.deliver.findMany({
       where: {
         AND: [
           {
-            id_users:
-              ids.id_users === '' ? undefined : ids.id_users,
+            id_user:
+              ids.id_user === '' ? undefined : ids.id_user,
           },
-          { id_orders: ids.id_orders === '' ? undefined : ids.id_orders },
+          { id_order: ids.id_order === '' ? undefined : ids.id_order },
         ],
       },
     });

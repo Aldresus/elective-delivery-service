@@ -4,10 +4,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateDeliverDto extends PartialType(CreateDeliverDto) {
   @ApiProperty({ required: false })
-  id_users?: string;
+  id_user?: string;
 
   @ApiProperty({ required: false })
-  id_orders?: string;
+  id_order?: string;
 
   @ApiProperty({ required: false })
   rating?: number;

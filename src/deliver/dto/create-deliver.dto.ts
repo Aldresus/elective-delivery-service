@@ -2,10 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateDeliverDto {
   @ApiProperty()
-  id_users: string;
+  id_user: string;
 
   @ApiProperty()
-  id_orders: string;
+  id_order: string;
 
   @ApiProperty()
   rating?: number;
