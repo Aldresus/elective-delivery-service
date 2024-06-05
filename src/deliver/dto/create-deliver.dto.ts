@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateDeliverDto {
   @ApiProperty()
-  id_deliveries: string;
+  id_users: string;
 
   @ApiProperty()
   id_orders: string;

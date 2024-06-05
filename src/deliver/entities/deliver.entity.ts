@@ -6,7 +6,7 @@ export class DeliverEntity implements Deliver {
   id: string;
 
   @ApiProperty()
-  id_deliveries: string;
+  id_users: string;
 
   @ApiProperty()
   id_orders: string;

@@ -28,16 +28,16 @@ export class DeliverController {
 
   @Get()
   @ApiCreatedResponse({ type: DeliverEntity, isArray: true })
-  @ApiQuery({ name: 'id_deliveries', required: false, type: String }) // Marque id_deliveries comme optionnel
+  @ApiQuery({ name: 'id_users', required: false, type: String }) // Marque id_users comme optionnel
   @ApiQuery({ name: 'id_orders', required: false, type: String })
   findAll(
-    @Query('id_deliveries') idDeliveries: string,
+    @Query('id_users') idDeliveries: string,
     @Query('id_orders') idOrders: string,
   ) {
     console.log(idDeliveries, idOrders);
 
     return this.deliverService.findMany({
-      id_deliveries: idDeliveries,
+      id_users: idDeliveries,
       id_orders: idOrders,
     });
   }
