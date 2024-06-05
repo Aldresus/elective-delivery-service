@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query} from '@nestjs/common';
 import { DeliverService } from './deliver.service';
 import { ApiBody, ApiCreatedResponse, ApiTags, ApiQuery } from '@nestjs/swagger';
 import { DeliverEntity } from './entities/deliver.entity';
