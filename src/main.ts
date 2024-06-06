@@ -7,7 +7,6 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Delivery microservice')
-    .setDescription('Delivery microservice')
     .setVersion('1.0')
     .build();
 

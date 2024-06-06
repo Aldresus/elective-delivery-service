@@ -15,17 +15,31 @@ export class DeliverService {
     });
   }
 
-  findMany(ids: { id_user: string; id_order: string }) {
+  findMany(ids: {
+    id_user: string;
+    id_order: string;
+    rating_e: number;
+    rating_gt: number;
+    rating_lt: number;
+  }) {
     console.log(ids);
 
     return this.prisma.deliver.findMany({
       where: {
         AND: [
           {
-            id_user:
-              ids.id_user === '' ? undefined : ids.id_user,
+            id_user: ids.id_user === '' ? undefined : ids.id_user,
           },
-          { id_order: ids.id_order === '' ? undefined : ids.id_order },
+          {
+            id_order: ids.id_order === '' ? undefined : ids.id_order,
+          },
+          {
+            rating: {
+              equals: ids.rating_e,
+              gt: ids.rating_gt,
+              lt: ids.rating_lt,
+            },
+          },
         ],
       },
     });
