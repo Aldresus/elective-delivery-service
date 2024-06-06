@@ -11,7 +11,7 @@ model Deliver {
   id_deliver     String   @id @default(auto()) @map("_id") @db.ObjectId
   id_user        String   @db.ObjectId
   id_order       String   @db.ObjectId
-  rating         Int @default(0)
+  rating         Float    @default(0)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
