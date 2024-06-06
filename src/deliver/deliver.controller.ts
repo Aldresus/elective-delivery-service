@@ -20,7 +20,7 @@ import { DeliverEntity } from './entities/deliver.entity';
 import { CreateDeliverDto } from './dto/create-deliver.dto';
 import { UpdateDeliverDto } from './dto/update-deliver.dto';
 
-@Controller('deliver')
+@Controller('api/deliver')
 @ApiTags('deliver')
 export class DeliverController {
   constructor(private readonly deliverService: DeliverService) {}
