@@ -63,14 +63,17 @@ export class DeliverController {
   @ApiOperation({ summary: 'Update delivery with ID' })
   @ApiCreatedResponse({ type: DeliverEntity })
   @ApiBody({ type: UpdateDeliverDto })
-  update(@Param('id') id: string, @Body() updateDeliverDto: UpdateDeliverDto) {
-    return this.deliverService.update(id, updateDeliverDto);
+  update(
+    @Param('id') id_deliver: string,
+    @Body() updateDeliverDto: UpdateDeliverDto,
+  ) {
+    return this.deliverService.update(id_deliver, updateDeliverDto);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete delivery with ID' })
   @ApiCreatedResponse({ type: DeliverEntity })
-  remove(@Param('id') id: string) {
-    return this.deliverService.remove(id);
+  remove(@Param('id') id_deliver: string) {
+    return this.deliverService.remove(id_deliver);
   }
 }

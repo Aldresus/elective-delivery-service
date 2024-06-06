@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Deliver {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  id_deliver     String   @id @default(auto()) @map("_id") @db.ObjectId
   id_user        String   @db.ObjectId
   id_order       String   @db.ObjectId
   rating         Int @default(0)

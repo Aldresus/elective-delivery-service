@@ -3,7 +3,7 @@ import type { Deliver } from '@prisma/client';
 
 export class DeliverEntity implements Deliver {
   @ApiProperty()
-  id: string;
+  id_deliver: string;
 
   @ApiProperty()
   id_user: string;

@@ -45,19 +45,19 @@ export class DeliverService {
     });
   }
 
-  update(id: string, updateDeliverDto: UpdateDeliverDto) {
+  update(id_deliver: string, updateDeliverDto: UpdateDeliverDto) {
     return this.prisma.deliver.update({
       where: {
-        id,
+        id_deliver,
       },
       data: updateDeliverDto,
     });
   }
 
-  remove(id: string) {
+  remove(id_deliver: string) {
     return this.prisma.deliver.delete({
       where: {
-        id,
+        id_deliver,
       },
     });
   }
