@@ -11,6 +11,7 @@ pipeline {
         stage('Check and Stop Existing Container') {
             steps {
                 script {
+                    cleanWs()
                     // Check if a container with the same name is already running
                     def containerExists = sh(script: "docker ps --filter 'name=${CONTAINER_NAME}' --format '{{.Names}}'", returnStdout: true).toString().trim()
                     if (containerExists) {
@@ -77,17 +78,6 @@ pipeline {
                     // Start the application within the running container
                     dockerExec('sh -c "npm start &"')
                 }
-            }
-        }
-    }
-
-    post {
-        always {
-            script {
-                // Stop and remove the Docker container
-                sh "docker stop ${CONTAINER_NAME}"
-                sh "docker rm ${CONTAINER_NAME}"
-                cleanWs()
             }
         }
     }
