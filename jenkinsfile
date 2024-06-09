@@ -6,12 +6,11 @@ pipeline {
         stage('clear existing image and container') {
             steps {
                 script {
-                    def containerExists = sh(script: "docker ps --filter 'name=delivery-service' --format '{{.Names}}'", returnStdout: true).toString().trim()
-                    if (containerExists) {
+                    try {
                         sh "docker rmi delivery-service"
                         sh "docker rm delivery-service"
 
-                    } else {
+                    } catch (Exception e) {
                         echo "No existing image or container to remove"
                     }
                 }
