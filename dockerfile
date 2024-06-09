@@ -1,7 +1,7 @@
 # Base image
 FROM node:22.2.0-alpine
 
-ENV NODE_ENV production
+# ENV NODE_ENV production
 
 USER node
 
