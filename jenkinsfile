@@ -1,35 +1,74 @@
-
 pipeline {
-    agent {
-        docker {
-            image 'node:22.2.0-alpine' 
-            args '-u root:root' 
-        }
+    agent any 
+
+    environment {
+        DOCKER_IMAGE = 'node:22.2.0-alpine'
+        CONTAINER_NAME = 'delivery-service'
+        APP_PORT = '9010'
     }
+    
     stages {
+        stage('Setup Docker Container') {
+            steps {
+                script {
+                    // Pull the Docker image
+                    sh "docker pull ${DOCKER_IMAGE}"
+                    // Start the Docker container in detached mode
+                    sh """
+                        docker run -d --name ${CONTAINER_NAME} \
+                        -p ${APP_PORT}:3000 \
+                        ${DOCKER_IMAGE} \
+                        sh -c "while true; do sleep 1000; done"
+                    """
+                    sh "docker exec ${CONTAINER_NAME} mkdir /app"
+                    sh "docker exec ${CONTAINER_NAME} ls"
+                    
+                    // Copy the workspace files to the Docker container
+                    sh "docker cp . ${CONTAINER_NAME}:/app"
+                    // List files to ensure they are copied correctly
+                    sh "docker exec ${CONTAINER_NAME} ls -l /app"
+                }
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                script {
+                    dockerExec('npm install')
+                }
             }
         }
 
         stage('Build Application') {
             steps {
-                sh 'npm run build'
+                script {
+                    dockerExec('npm run build')
+                }
             }
         }
 
         stage('Serve Application') {
             steps {
-                sh 'npm start &'
+                script {
+                    // Start the application within the running container
+                    dockerExec('sh -c "npm start &"')
+                }
             }
         }
     }
 
     post {
         always {
-            // Cleanup or additional steps
-            cleanWs()
+            script {
+                // Stop and remove the Docker container
+                sh "docker stop ${CONTAINER_NAME}"
+                sh "docker rm ${CONTAINER_NAME}"
+                cleanWs()
+            }
         }
     }
+}
+
+def dockerExec(command) {
+    sh "docker exec ${CONTAINER_NAME} ${command}"
 }
