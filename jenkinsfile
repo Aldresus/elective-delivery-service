@@ -1,81 +1,26 @@
 pipeline {
     agent any 
 
-    environment {
-        DOCKER_IMAGE = 'node:22.2.0-alpine'
-        CONTAINER_NAME = 'delivery-service'
-        APP_PORT = '9010'
-    }
-    
+
     stages {
-        stage('Check and Stop Existing Container') {
+        stage('clear existing image') {
             steps {
-                script {
-                    // Check if a container with the same name is already running
-                    def containerExists = sh(script: "docker ps --filter 'name=${CONTAINER_NAME}' --format '{{.Names}}'", returnStdout: true).toString().trim()
-                    if (containerExists) {
-                        // Stop and remove the existing container
-                        sh "docker stop ${CONTAINER_NAME}"
-                        sh "docker rm ${CONTAINER_NAME}"
-                    }
-                }
+                sh "docker rmi delivery-service"
             }
         }
-
-        stage('Setup Docker Container') {
-            steps {
-                script {
-                    // Pull the Docker image
-                    sh "docker pull ${DOCKER_IMAGE}"
-                    // Start the Docker container in detached mode
-                    sh """
-                        docker run -d --name ${CONTAINER_NAME} \
-                        -p ${APP_PORT}:3000 \
-                        --restart unless-stopped \
-                        ${DOCKER_IMAGE} \
-                        sh -c "while true; do sleep 1000; done"
-                    """
-                    sh "docker exec ${CONTAINER_NAME} ls -l"
-                    sh "ls -l"
-                    
-                    // Copy the workspace files to the Docker container
-                    sh "docker cp . ${CONTAINER_NAME}:/"
-                    // List files to ensure they are copied correctly
-                    sh "docker exec ${CONTAINER_NAME} ls -l /"
-                }
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    dockerExec('npm install')
-                }
-            }
-        }
-
-        stage('Build Application') {
-            steps {
-                script {
-                    dockerExec('npm run build')
-                }
-            }
-        }
-
-        stage('Serve Application') {
+        stage('build image') {
             steps {
                 script {
                     // Start the application within the running container
-                    dockerExec('sh -c "npm start &"')
+                    sh "docker build -t delivery-service ."
                 }
             }
         }
-    }
-
-    post {
-        always {
-            script {
-                cleanWs()
+        stage('deploy') {
+            steps {
+                script {
+                    sh "docker run -d --name delivery-service -p 9010:3000 --restart unless-stopped delivery-service"
+                }
             }
         }
     }
