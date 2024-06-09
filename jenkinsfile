@@ -20,13 +20,12 @@ pipeline {
                         ${DOCKER_IMAGE} \
                         sh -c "while true; do sleep 1000; done"
                     """
-                    sh "docker exec ${CONTAINER_NAME} mkdir /app"
                     sh "docker exec ${CONTAINER_NAME} ls"
                     
                     // Copy the workspace files to the Docker container
-                    sh "docker cp . ${CONTAINER_NAME}:/app"
+                    sh "docker cp . ${CONTAINER_NAME}:/"
                     // List files to ensure they are copied correctly
-                    sh "docker exec ${CONTAINER_NAME} ls -l /app"
+                    sh "docker exec ${CONTAINER_NAME} ls -l /"
                 }
             }
         }
