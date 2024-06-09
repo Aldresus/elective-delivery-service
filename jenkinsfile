@@ -11,7 +11,6 @@ pipeline {
         stage('Check and Stop Existing Container') {
             steps {
                 script {
-                    cleanWs()
                     // Check if a container with the same name is already running
                     def containerExists = sh(script: "docker ps --filter 'name=${CONTAINER_NAME}' --format '{{.Names}}'", returnStdout: true).toString().trim()
                     if (containerExists) {
@@ -36,22 +35,13 @@ pipeline {
                         ${DOCKER_IMAGE} \
                         sh -c "while true; do sleep 1000; done"
                     """
-                    sh "docker exec ${CONTAINER_NAME} ls"
+                    sh "docker exec ${CONTAINER_NAME} ls -l"
+                    sh "ls -l"
                     
                     // Copy the workspace files to the Docker container
                     sh "docker cp . ${CONTAINER_NAME}:/"
                     // List files to ensure they are copied correctly
                     sh "docker exec ${CONTAINER_NAME} ls -l /"
-                }
-            }
-        }
-
-        stage('Clean Environment') {
-            steps {
-                script {
-                    // Remove node_modules and clean npm cache
-                    dockerExec('rm -rf node_modules')
-                    dockerExec('npm cache clean --force')
                 }
             }
         }
@@ -78,6 +68,14 @@ pipeline {
                     // Start the application within the running container
                     dockerExec('sh -c "npm start &"')
                 }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                cleanWs()
             }
         }
     }
