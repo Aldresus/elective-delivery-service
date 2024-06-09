@@ -1,6 +1,9 @@
 pipeline {
     agent any 
 
+    environment {
+        MONGODB_URI = credentials('DELIVERY_SERVICE_MONGODB_URI')
+    }
 
     stages {
         stage('clear existing image and container') {
@@ -8,7 +11,9 @@ pipeline {
                 script {
                     try {
                         sh "docker rm delivery-service"
+
                         sh "docker rmi delivery-service"
+
 
                     } catch (Exception e) {
                         echo "No existing image or container to remove"
@@ -20,6 +25,7 @@ pipeline {
             steps {
                 script {
                     // Start the application within the running container
+                    sh "touch delivery-service << EOF\n${MONGODB_URI}\nEOF"
                     sh "docker build -t delivery-service ."
                 }
             }
