@@ -1,6 +1,7 @@
 pipeline {
     agent {
         docker { image 'node:22.2.0-alpine' }
+        args '-u root:root' // Use root user inside the container
     }
     stages {
         stage('Test') {
