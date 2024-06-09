@@ -1,35 +1,45 @@
-
 pipeline {
-    agent {
-        docker {
-            image 'node:22.2.0-alpine' 
-            args '-u root:root' 
-        }
+    agent any 
+
+    environment {
+        MONGODB_URI = credentials('DELIVERY_SERVICE_MONGODB_URI')
     }
+
     stages {
-        stage('Install Dependencies') {
+        stage('clear existing image and container') {
             steps {
-                sh 'npm install'
+                script {
+                    try {
+                        sh "docker kill delivery-service"
+                        sh "docker rm delivery-service"
+                        sh "docker rmi delivery-service"
+
+
+                    } catch (Exception e) {
+                        echo "No existing image or container to remove"
+                    }
+                }
             }
         }
-
-        stage('Build Application') {
+        stage('build image') {
             steps {
-                sh 'npm run build'
+                script {
+                    // Start the application within the running container
+                    sh "touch .env && echo DATABASE_URL=${MONGODB_URI} >> .env"
+                    sh "docker build -t delivery-service ."
+                }
             }
         }
-
-        stage('Serve Application') {
+        stage('deploy') {
             steps {
-                sh 'npm start &'
+                script {
+                    sh "docker run -d --name delivery-service -p 9010:3000 --restart unless-stopped delivery-service"
+                }
             }
         }
     }
+}
 
-    post {
-        always {
-            // Cleanup or additional steps
-            cleanWs()
-        }
-    }
+def dockerExec(command) {
+    sh "docker exec ${CONTAINER_NAME} ${command}"
 }
