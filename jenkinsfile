@@ -31,6 +31,16 @@ pipeline {
             }
         }
 
+        stage('Clean Environment') {
+            steps {
+                script {
+                    // Remove node_modules and clean npm cache
+                    dockerExec('rm -rf node_modules')
+                    dockerExec('npm cache clean --force')
+                }
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 script {
