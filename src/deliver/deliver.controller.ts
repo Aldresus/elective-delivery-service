@@ -53,9 +53,9 @@ export class DeliverController {
     return this.deliverService.findMany({
       id_user: idDeliveries,
       id_order: idOrders,
-      rating_e: Number(ratingE) || undefined,
-      rating_gt: Number(ratingGT) || undefined,
-      rating_lt: Number(ratingLT) || undefined,
+      rating_e: ratingE === undefined ? undefined : Number(ratingE),
+      rating_gt: ratingGT === undefined ? undefined : Number(ratingGT),
+      rating_lt: ratingLT === undefined ? undefined : Number(ratingLT),
     });
   }
 
