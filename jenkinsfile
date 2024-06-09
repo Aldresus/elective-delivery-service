@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     // Start the application within the running container
-                    sh "touch delivery-service << EOF\n${MONGODB_URI}\nEOF"
+                    sh "touch .env && echo DATABASE_URL=${MONGODB_URI} >> .env"
                     sh "docker build -t delivery-service ."
                 }
             }
