@@ -5,7 +5,8 @@ pipeline {
     stages {
         stage('clear existing image and container') {
             steps {
-                def containerExists = sh(script: "docker ps --filter 'name=delivery-service' --format '{{.Names}}'", returnStdout: true).toString().trim()
+                script {
+                    def containerExists = sh(script: "docker ps --filter 'name=delivery-service' --format '{{.Names}}'", returnStdout: true).toString().trim()
                     if (containerExists) {
                         sh "docker rmi delivery-service"
                         sh "docker rm delivery-service"
@@ -13,6 +14,7 @@ pipeline {
                     } else {
                         echo "No existing image or container to remove"
                     }
+                }
             }
         }
         stage('build image') {
