@@ -40,7 +40,7 @@ pipeline {
             }
         }
     }
-}
+}  
 
 def dockerExec(command) {
     sh "docker exec ${CONTAINER_NAME} ${command}"
