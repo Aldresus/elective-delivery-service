@@ -9,6 +9,7 @@ pipeline {
         stage('clear existing image and container') {
             steps {
                 script {
+                    sh "echo deleting existing image and container"
                     try {
                         sh "docker kill delivery-service"
                         sh "docker rm delivery-service"
