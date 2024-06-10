@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         MONGODB_URI = credentials('DELIVERY_SERVICE_MONGODB_URI')
+        DISCORD_WEBHOOK_URL = credentials('DISCORD_WEBHOOK_URL')
     }
 
     stages {
@@ -20,7 +21,12 @@ pipeline {
                         echo "No existing image or container to remove"
                     }
                 }
-            }   
+            }
+            post {
+                failure {
+                    discordSend description: "Failed to clear existing image and container.", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK_URL}"
+                }
+            }
         }
         stage('build image') {
             steps {
@@ -31,11 +37,25 @@ pipeline {
                     sh "docker build -t delivery-service ."
                 }
             }
+            post {
+                failure {
+                    discordSend description: "Failed to build image.", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK_URL}"
+
+                }
+            }
         }
         stage('deploy') {
             steps {
                 script {
                     sh "docker run -d --name delivery-service -p 9010:3000 --restart unless-stopped delivery-service"
+                }
+            }
+            post {
+                success {
+                    discordSend description: "Deployed image successfully.", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK_URL}"
+                }
+                failure {
+                    discordSend description: "Failed to deploy image.", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK_URL}"
                 }
             }
         }
