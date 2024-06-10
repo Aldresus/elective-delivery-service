@@ -48,8 +48,6 @@ export class DeliverController {
     @Query('rating_gt') ratingGT: number,
     @Query('rating_lt') ratingLT: number,
   ) {
-    console.log(idDeliveries, idOrders, ratingE, ratingGT, ratingLT);
-
     return this.deliverService.findMany({
       id_user: idDeliveries,
       id_order: idOrders,

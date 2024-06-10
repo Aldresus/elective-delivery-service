@@ -8,8 +8,6 @@ export class DeliverService {
   constructor(private prisma: PrismaService) {}
 
   create(createDeliverDto: CreateDeliverDto) {
-    console.log(createDeliverDto);
-
     return this.prisma.deliver.create({
       data: createDeliverDto,
     });
@@ -22,8 +20,6 @@ export class DeliverService {
     rating_gt: number;
     rating_lt: number;
   }) {
-    console.log(ids);
-
     return this.prisma.deliver.findMany({
       where: {
         AND: [

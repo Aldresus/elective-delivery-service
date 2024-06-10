@@ -70,8 +70,6 @@ describe('DeliverService', () => {
       };
       jest.spyOn(prismaService.deliver, 'create').mockResolvedValue(result);
 
-      console.log(await service.create(createDeliverDto));
-
       expect(await service.create(createDeliverDto)).toBe(result);
       expect(prismaService.deliver.create).toHaveBeenCalledWith({
         data: createDeliverDto,
