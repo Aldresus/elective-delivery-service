@@ -9,6 +9,7 @@ pipeline {
         stage('clear existing image and container') {
             steps {
                 script {
+                    sh "echo deleting existing image and container"
                     try {
                         sh "docker kill delivery-service"
                         sh "docker rm delivery-service"
@@ -24,6 +25,7 @@ pipeline {
         stage('build image') {
             steps {
                 script {
+                    echo "building image with mongo ${MONGODB_URI}"
                     // Start the application within the running container
                     sh "touch .env && echo DATABASE_URL=${MONGODB_URI} >> .env"
                     sh "docker build -t delivery-service ."
