@@ -32,7 +32,6 @@ pipeline {
             steps {
                 script {
                     echo "building image with mongo ${MONGODB_URI}"
-                    // Start the application within the running container
                     sh "touch .env && echo DATABASE_URL=${MONGODB_URI} >> .env"
                     sh "docker build -t delivery-service ."
                 }
