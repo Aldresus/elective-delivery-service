@@ -20,7 +20,7 @@ pipeline {
                         echo "No existing image or container to remove"
                     }
                 }
-            }
+            }   
         }
         stage('build image') {
             steps {
