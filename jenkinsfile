@@ -12,8 +12,10 @@ pipeline {
                 script {
                     sh "echo deleting existing image and container"
                     try {
-                        sh "docker kill delivery-service"
-                        sh "docker rm delivery-service"
+                        sh "docker kill delivery-service1"
+                        sh "docker kill delivery-service2"
+                        sh "docker rm delivery-service1"
+                        sh "docker rm delivery-service2"
                         sh "docker rmi delivery-service"
                     } catch (Exception e) {
                         echo "No existing image or container to remove"
@@ -49,7 +51,8 @@ pipeline {
         stage('deploy') {
             steps {
                 script {
-                    sh "docker run -d --name delivery-service -p 9010:3000 --restart unless-stopped delivery-service"
+                    sh "docker run -d --name delivery-service1 --network elective_network --restart unless-stopped delivery-service"
+                    sh "docker run -d --name delivery-service2 --network elective_network --restart unless-stopped delivery-service"
                 }
             }
             post {
