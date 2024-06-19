@@ -48,6 +48,28 @@ pipeline {
                 }
             }
         }
+        stage('run tests') {
+            steps {
+                script {
+                    sh "npm install"
+                    sh "npm run test"
+                }
+            }
+            post {
+                success {
+                    script {
+                        def committerName = sh(script: 'git log -1 --pretty=format:"%cn"', returnStdout: true).trim()
+                        discordSend description: "Tests passed successfully. Committer: ${committerName}", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK_URL}"
+                    }
+                }
+                failure {
+                    script {
+                        def committerName = sh(script: 'git log -1 --pretty=format:"%cn"', returnStdout: true).trim()
+                        discordSend description: "Tests failed. Committer: ${committerName}", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK_URL}"
+                    }
+                }
+            }
+        }
         stage('deploy') {
             steps {
                 script {
