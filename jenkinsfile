@@ -1,6 +1,10 @@
 pipeline {
     agent any 
 
+    tools {
+        nodejs 'Node22.3.0'
+    }
+
     environment {
         MONGODB_URI = credentials('DELIVERY_SERVICE_MONGODB_URI')
         DISCORD_WEBHOOK_URL = credentials('DISCORD_WEBHOOK_URL')
